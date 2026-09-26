@@ -431,7 +431,39 @@ footer a {
 
 /* MOBILE */
 @media (max-width: 850px) {
+.hero {
+  min-height: 420px;
+  height: 420px;
+}
 
+.hero-banner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+    .hero-banner {
+  position: relative;
+}
+
+.hero-banner::after {
+  content: "From Sri Lanka";
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  white-space: nowrap;
+}
     .navbar {
         flex-wrap: wrap;
     }
@@ -519,29 +551,26 @@ footer a {
     <img src="ChatGPT Image Sep 26, 2026, 05_52_55 PM.png" alt="UDARASA SPICES PRODUCTS">
   </div>
 </section>
-
-  <div class="hero-features">
-    <div>
-      <strong>100%</strong>
-      <span>Natural</span>
-    </div>
-
-    <div>
-      <strong>Premium</strong>
-      <span>Quality</span>
-    </div>
-
-    <div>
-      <strong>Pure Spices</strong>
-      <span>Pure Life</span>
-    </div>
-
-    <div>
-      <strong>Rich Aroma</strong>
-      <span>Natural Taste</span>
-    </div>
+<div class="hero-features">
+  <div>
+    <strong>🌿 100%</strong>
+    <span>Natural</span>
   </div>
-</section>
+  <div>
+    <strong>⭐ Premium</strong>
+    <span>Quality</span>
+  </div>
+  <div>
+    <strong>🌶️ Pure Spices</strong>
+    <span>Pure Life</span>
+  </div>
+  <div>
+    <strong>✨ Rich Aroma</strong>
+    <span>Natural Taste</span>
+  </div>
+</div>
+  
+
 
 <section class="products" id="products">
     <div class="container">
