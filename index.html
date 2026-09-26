@@ -85,21 +85,23 @@ header {
 
 /* HERO */
 .hero {
-    background: #fffaf2;
-    min-height: 560px;
-    display: flex;
-    align-items: center;
+    min-height: 680px;
+width: 100%;
+background: #111;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+overflow: hidden;
 }
 
 .hero-content {
     max-width: 1200px;
     width: 100%;
     margin: auto;
-    padding: 70px 25px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
+   
+   display: block;
+padding: 0;
 }
 
 .hero-text h1 {
@@ -152,7 +154,45 @@ header {
   justify-content: center;
   box-shadow: none;
 }
+.hero {
+  min-height: 680px;
+  background:
+    linear-gradient(rgba(248,244,232,0.35), rgba(248,244,232,0.35)),
+    url('IMG_2178.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
 
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 60px 40px;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 3;
+}
+
+.hero-visual {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 0;
+  background: transparent;
+  z-index: 1;
+}
+
+.hero-overlay {
+  display: none;
+}
 .hero-overlay {
   text-align: center;
   color: white;
@@ -474,37 +514,42 @@ footer a {
 </header>
 
 <main>
-
 <section class="hero" id="home">
-    <div class="hero-content">
+  <div class="hero-banner">
 
-        <div class="hero-text">
-            <h1>UDARASA<br>SPICES PRODUCTS</h1>
+    <img src="IMG_2178.jpg" alt="UDARASA SPICES PRODUCTS">
 
-            <div class="tagline">
-                Pure Spices • Pure Life
-            </div>
+    <div class="hero-banner-content">
+      <img src="udarasa-favicon.png" alt="UDARASA SPICES PRODUCTS" class="hero-logo">
 
-            <p>
-                Premium quality Sri Lankan spices,
-                carefully selected for authentic taste
-                and natural goodness.
-            </p>
+      <h1>From <span>Sri Lanka</span></h1>
 
-            <a href="#products" class="btn">
-                SHOP NOW
-            </a>
-        </div>
-
-       <div class="hero-visual">
-    <div class="hero-overlay">
-        <img src="udarasa-favicon.png" alt="UDARASA SPICES PRODUCTS">
-        <h2>From Sri Lanka</h2>
-        <p>Authentic spices for your everyday kitchen.</p>
+      <p>Authentic spices for your everyday kitchen.</p>
     </div>
-</div>
 
+  </div>
+
+  <div class="hero-features">
+    <div>
+      <strong>100%</strong>
+      <span>Natural</span>
     </div>
+
+    <div>
+      <strong>Premium</strong>
+      <span>Quality</span>
+    </div>
+
+    <div>
+      <strong>Pure Spices</strong>
+      <span>Pure Life</span>
+    </div>
+
+    <div>
+      <strong>Rich Aroma</strong>
+      <span>Natural Taste</span>
+    </div>
+  </div>
 </section>
 
 <section class="products" id="products">
