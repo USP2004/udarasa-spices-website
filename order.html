@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Place Order - UDARASA SPICES PRODUCTS</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf0;
+  color: #333;
+}
+
+.order-page {
+  max-width: 600px;
+  margin: auto;
+  padding: 30px 20px 50px;
+}
+
+.logo {
+  text-align: center;
+  color: #a71920;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.tagline {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.order-box {
+  background: white;
+  border: 1px solid #eadfce;
+  border-radius: 22px;
+  padding: 25px 20px;
+  box-shadow: 0 8px 25px rgba(80,30,10,0.10);
+}
+
+h1 {
+  text-align: center;
+  color: #a71920;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin: 16px 0 7px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #fff;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.order-button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  border: none;
+  border-radius: 30px;
+  background: #a71920;
+  color: white;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.order-button:hover {
+  background: #8d141a;
+}
+
+.back-button {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #a71920;
+  text-decoration: none;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="order-page">
+
+  <div class="logo">UDARASA SPICES PRODUCTS</div>
+  <div class="tagline">PURE SPICES • PURE LIFE</div>
+
+  <div class="order-box">
+
+    <h1>Place Your Order</h1>
+
+    <label for="product">Product</label>
+    <input type="text" id="product" placeholder="Product name">
+
+    <label for="size">Select Size</label>
+    <select id="size">
+      <option value="50g">50g</option>
+      <option value="100g">100g</option>
+      <option value="250g">250g</option>
+      <option value="500g">500g</option>
+    </select>
+
+    <label for="quantity">Quantity</label>
+    <input type="number" id="quantity" min="1" value="1" placeholder="How many packets?">
+
+    <label for="name">Your Name</label>
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="Enter your phone number">
+
+    <label for="address">Delivery Address</label>
+    <textarea id="address" placeholder="Enter your delivery address"></textarea>
+
+    <button class="order-button" onclick="placeOrder()">
+      Place Order
+    </button>
+
+    <a href="index.html" class="back-button">← Back to Products</a>
+
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const productName = params.get("product");
+
+if (productName) {
+  document.getElementById("product").value = productName;
+}
+
+function placeOrder() {
+
+  const product = document.getElementById("product").value;
+  const size = document.getElementById("size").value;
+  const quantity = document.getElementById("quantity").value;
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+
+  if (!product || !name || !phone || !address) {
+    alert("Please fill in all required details.");
+    return;
+  }
+
+  const message =
+    "UDARASA SPICES PRODUCTS - NEW ORDER%0A%0A" +
+    "Product: " + encodeURIComponent(product) + "%0A" +
+    "Size: " + encodeURIComponent(size) + "%0A" +
+    "Quantity: " + encodeURIComponent(quantity) + "%0A%0A" +
+    "Customer Name: " + encodeURIComponent(name) + "%0A" +
+    "Phone: " + encodeURIComponent(phone) + "%0A" +
+    "Address: " + encodeURIComponent(address);
+
+  window.location.href = "https://wa.me/94704112222?text=" + message;
+}
+</script>
+
+</body>
+</html>
