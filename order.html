@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,63 +15,62 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #fffaf0;
+  background: #faf5e9;
   color: #333;
+  padding: 25px 15px;
 }
 
-.order-page {
-  max-width: 600px;
-  margin: auto;
-  padding: 30px 20px 50px;
+.header {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .logo {
-  text-align: center;
-  color: #a71920;
-  font-size: 28px;
+  color: #a91f24;
+  font-size: 34px;
   font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 5px;
+  letter-spacing: 2px;
 }
 
 .tagline {
-  text-align: center;
+  margin-top: 10px;
   color: #555;
-  font-size: 14px;
-  letter-spacing: 3px;
-  margin-bottom: 30px;
+  font-size: 17px;
+  letter-spacing: 4px;
 }
 
 .order-box {
+  max-width: 700px;
+  margin: auto;
   background: white;
-  border: 1px solid #eadfce;
-  border-radius: 22px;
-  padding: 25px 20px;
-  box-shadow: 0 8px 25px rgba(80,30,10,0.10);
+  padding: 30px 25px;
+  border-radius: 25px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.08);
 }
 
 h1 {
   text-align: center;
-  color: #a71920;
-  font-size: 28px;
-  margin-bottom: 25px;
+  color: #a91f24;
+  margin-bottom: 30px;
+  font-size: 36px;
 }
 
 label {
   display: block;
-  font-weight: 600;
-  margin: 16px 0 7px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 18px 0 8px;
 }
 
-input,
 select,
+input,
 textarea {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-  background: #fff;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 17px;
+  background: white;
 }
 
 textarea {
@@ -79,110 +78,292 @@ textarea {
   resize: vertical;
 }
 
-.order-button {
+.add-btn {
   width: 100%;
-  margin-top: 25px;
+  margin-top: 20px;
   padding: 16px;
   border: none;
   border-radius: 30px;
-  background: #a71920;
+  background: #a91f24;
   color: white;
   font-size: 19px;
-  font-weight: 700;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.order-button:hover {
-  background: #8d141a;
+.add-btn:hover {
+  background: #87191d;
 }
 
-.back-button {
+.cart-box {
+  margin-top: 25px;
+  padding: 20px;
+  background: #faf5e9;
+  border-radius: 15px;
+}
+
+.cart-box h2 {
+  color: #a91f24;
+  margin-bottom: 15px;
+}
+
+.cart-item {
+  background: white;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.remove-btn {
+  border: none;
+  background: #ddd;
+  color: #333;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 18px;
+  border: none;
+  border-radius: 30px;
+  background: #25D366;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-btn {
   display: block;
   text-align: center;
   margin-top: 20px;
-  color: #a71920;
+  color: #a91f24;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 18px 12px;
+  }
+
+  .logo {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .tagline {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .order-box {
+    padding: 25px 18px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="order-page">
-
+<div class="header">
   <div class="logo">UDARASA SPICES PRODUCTS</div>
   <div class="tagline">PURE SPICES • PURE LIFE</div>
+</div>
 
-  <div class="order-box">
+<div class="order-box">
 
-    <h1>Place Your Order</h1>
+<h1>Place Your Order</h1>
 
-    <label for="product">Product</label>
-    <input type="text" id="product" placeholder="Product name">
+<label>Product / නිෂ්පාදනය</label>
 
-    <label for="size">Select Size</label>
-    <select id="size">
-      <option value="50g">50g</option>
-      <option value="100g">100g</option>
-      <option value="250g">250g</option>
-      <option value="500g">500g</option>
-    </select>
+<select id="product">
+  <option value="">Select Product</option>
+  <option value="මිරිස් කුඩු - Chilli Powder">මිරිස් කුඩු — Chilli Powder</option>
+  <option value="කැලි මිරිස් - Dried Chilli">කැලි මිරිස් — Dried Chilli</option>
+  <option value="බැදපු මිරිස් - Roasted Chilli">බැදපු මිරිස් — Roasted Chilli</option>
+  <option value="කහ කුඩු - Turmeric Powder">කහ කුඩු — Turmeric Powder</option>
+  <option value="ගම්මිරිස් කුඩු - Pepper Powder">ගම්මිරිස් කුඩු — Pepper Powder</option>
+  <option value="තුනපහ කුඩු - Three Spice Blend">තුනපහ කුඩු — Three Spice Blend</option>
+  <option value="බැදපු තුනපහ කුඩු - Roasted Three Spice Blend">බැදපු තුනපහ කුඩු — Roasted Three Spice Blend</option>
+</select>
 
-    <label for="quantity">Quantity</label>
-    <input type="number" id="quantity" min="1" value="1" placeholder="How many packets?">
+<label>Size / ප්‍රමාණය</label>
 
-    <label for="name">Your Name</label>
-    <input type="text" id="name" placeholder="Enter your name">
+<select id="size">
+  <option value="50g">50g</option>
+  <option value="100g">100g</option>
+  <option value="250g">250g</option>
+  <option value="500g">500g</option>
+</select>
 
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" placeholder="Enter your phone number">
+<label>Quantity / ප්‍රමාණ ගණන</label>
 
-    <label for="address">Delivery Address</label>
-    <textarea id="address" placeholder="Enter your delivery address"></textarea>
+<input type="number" id="quantity" value="1" min="1">
 
-    <button class="order-button" onclick="placeOrder()">
-      Place Order
-    </button>
+<button class="add-btn" onclick="addToCart()">
+  + Add to Order
+</button>
 
-    <a href="index.html" class="back-button">← Back to Products</a>
+<div class="cart-box">
 
-  </div>
+<h2>Your Order</h2>
+
+<div id="cart">
+  <p>No products added yet.</p>
+</div>
+
+</div>
+
+<label>Your Name / නම</label>
+<input type="text" id="name" placeholder="Enter your name">
+
+<label>Phone Number / දුරකථන අංකය</label>
+<input type="tel" id="phone" placeholder="Enter your phone number">
+
+<label>Delivery Address / බෙදාහැරීමේ ලිපිනය</label>
+<textarea id="address" placeholder="Enter your delivery address"></textarea>
+
+<button class="whatsapp-btn" onclick="placeOrder()">
+  📲 Place Order on WhatsApp
+</button>
+
+<a href="index.html" class="back-btn">
+  ← Back to Products
+</a>
+
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const productName = params.get("product");
 
-if (productName) {
-  document.getElementById("product").value = productName;
-}
+let cart = [];
 
-function placeOrder() {
+function addToCart() {
 
   const product = document.getElementById("product").value;
   const size = document.getElementById("size").value;
   const quantity = document.getElementById("quantity").value;
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const address = document.getElementById("address").value;
 
-  if (!product || !name || !phone || !address) {
-    alert("Please fill in all required details.");
+  if (!product) {
+    alert("Please select a product.");
     return;
   }
 
-  const message =
-    "UDARASA SPICES PRODUCTS - NEW ORDER%0A%0A" +
-    "Product: " + encodeURIComponent(product) + "%0A" +
-    "Size: " + encodeURIComponent(size) + "%0A" +
-    "Quantity: " + encodeURIComponent(quantity) + "%0A%0A" +
-    "Customer Name: " + encodeURIComponent(name) + "%0A" +
-    "Phone: " + encodeURIComponent(phone) + "%0A" +
-    "Address: " + encodeURIComponent(address);
+  if (quantity < 1) {
+    alert("Please enter a valid quantity.");
+    return;
+  }
 
-  window.location.href = "https://wa.me/94704112222?text=" + message;
+  cart.push({
+    product: product,
+    size: size,
+    quantity: quantity
+  });
+
+  displayCart();
+
+  document.getElementById("product").value = "";
+  document.getElementById("quantity").value = 1;
 }
+
+function displayCart() {
+
+  const cartDiv = document.getElementById("cart");
+
+  if (cart.length === 0) {
+    cartDiv.innerHTML = "<p>No products added yet.</p>";
+    return;
+  }
+
+  cartDiv.innerHTML = "";
+
+  cart.forEach((item, index) => {
+
+    const div = document.createElement("div");
+
+    div.className = "cart-item";
+
+    div.innerHTML = `
+      <div>
+        <strong>${item.product}</strong><br>
+        Size: ${item.size} × ${item.quantity}
+      </div>
+
+      <button class="remove-btn" onclick="removeItem(${index})">
+        Remove
+      </button>
+    `;
+
+    cartDiv.appendChild(div);
+  });
+}
+
+function removeItem(index) {
+
+  cart.splice(index, 1);
+
+  displayCart();
+}
+
+function placeOrder() {
+
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if (cart.length === 0) {
+    alert("Please add at least one product.");
+    return;
+  }
+
+  if (!name || !phone || !address) {
+    alert("Please fill in your name, phone number and delivery address.");
+    return;
+  }
+
+  let message =
+    "UDARASA SPICES PRODUCTS - NEW ORDER%0A%0A";
+
+  cart.forEach((item, index) => {
+
+    message +=
+      (index + 1) + ". " +
+      item.product +
+      "%0A" +
+      "Size: " + item.size +
+      "%0A" +
+      "Quantity: " + item.quantity +
+      "%0A%0A";
+
+  });
+
+  message +=
+    "Customer Name: " + encodeURIComponent(name) +
+    "%0APhone: " + encodeURIComponent(phone) +
+    "%0ADelivery Address: " + encodeURIComponent(address);
+
+  window.location.href =
+    "https://wa.me/94704112222?text=" + message;
+}
+
 </script>
 
 </body>
