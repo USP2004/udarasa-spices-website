@@ -794,7 +794,16 @@ footer a {
         </div>
     </div>
 </section>
+<section id="cart-section">
+    <div class="container">
+        <h2 class="section-title">🛒 Your Cart</h2>
+        <p class="section-subtitle">Your selected UDARASA products.</p>
 
+        <div id="cart-items">
+            <p>Your cart is empty.</p>
+        </div>
+    </div>
+</section>
 </main>
 
 <footer>
@@ -862,7 +871,30 @@ if (addButton) {
         alert(productName + ' - ' + size + ' Cart එකට එකතු කළා');
     });
 }
+function displayCart() {
+    const cartItems = document.getElementById('cart-items');
 
+    if (!cartItems) return;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Your cart is empty.</p>';
+        return;
+    }
+
+    cartItems.innerHTML = '';
+
+    cart.forEach((item) => {
+        cartItems.innerHTML += `
+            <div class="cart-item">
+                <strong>${item.product}</strong>
+                <span>Size: ${item.size}</span>
+                <span>Qty: ${item.quantity}</span>
+            </div>
+        `;
+    });
+}
+
+displayCart();
 updateCartCount();
 </script>
 </body>
