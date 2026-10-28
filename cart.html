@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | UDARASA</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fffaf2;
+            color: #292929;
+        }
+
+        .cart-page {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #9f1d20;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        h1 {
+            color: #9f1d20;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background: white;
+            border: 1px solid #eadfd2;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .cart-item strong {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="cart-page">
+
+    <a href="index.html" class="back-btn">← Continue Shopping</a>
+
+    <h1>🛒 Your Cart</h1>
+
+    <div id="cart-items"></div>
+
+</div>
+
+<script>
+    const cart = JSON.parse(localStorage.getItem('udarasaCart')) || [];
+    const cartItems = document.getElementById('cart-items');
+
+    if (cart.length === 0) {
+        cartItems.innerHTML =
+            '<div class="empty-cart">Your cart is empty.</div>';
+    } else {
+        cart.forEach((item) => {
+            cartItems.innerHTML += `
+                <div class="cart-item">
+                    <strong>${item.product}</strong>
+                    <div>Size: ${item.size}</div>
+                    <div>Quantity: ${item.quantity}</div>
+                </div>
+            `;
+        });
+    }
+</script>
+
+</body>
+</html>
