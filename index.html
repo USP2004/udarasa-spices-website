@@ -600,7 +600,14 @@ footer a {
   <h3>මිරිස් කුඩු</h3>
   <p>Chili Powder</p>
   
- <a href="order.html" class="product-btn">Order Now</a>
+ <select class="product-size">
+    <option value="50g">50g</option>
+    <option value="100g">100g</option>
+    <option value="250g">250g</option>
+    <option value="500g">500g</option>
+</select>
+
+<button class="product-btn" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -825,6 +832,38 @@ footer a {
         © 2026 UDARASA SPICES PRODUCTS. All Rights Reserved.
     </div>
 </footer>
+<script>
+let cart = JSON.parse(localStorage.getItem('udarasaCart')) || [];
 
+function updateCartCount() {
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        cartCount.textContent = cart.length;
+    }
+}
+
+const addButton = document.querySelector('.product-card .product-btn');
+
+if (addButton) {
+    addButton.addEventListener('click', function () {
+        const productCard = this.closest('.product-card');
+        const productName = productCard.querySelector('h3').textContent;
+        const size = productCard.querySelector('.product-size').value;
+
+        cart.push({
+            product: productName,
+            size: size,
+            quantity: 1
+        });
+
+        localStorage.setItem('udarasaCart', JSON.stringify(cart));
+        updateCartCount();
+
+        alert(productName + ' - ' + size + ' Cart එකට එකතු කළා');
+    });
+}
+
+updateCartCount();
+</script>
 </body>
 </html>
