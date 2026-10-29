@@ -229,33 +229,7 @@ textarea {
 let cart = JSON.parse(localStorage.getItem("udarasaCart")) || [];
 displayCart();
 
-function addToCart() {
 
-  const product = document.getElementById("product").value;
-  const size = document.getElementById("size").value;
-  const quantity = document.getElementById("quantity").value;
-
-  if (!product) {
-    alert("Please select a product.");
-    return;
-  }
-
-  if (quantity < 1) {
-    alert("Please enter a valid quantity.");
-    return;
-  }
-
-  cart.push({
-    product: product,
-    size: size,
-    quantity: quantity
-  });
-
-  displayCart();
-
-  document.getElementById("product").value = "";
-  document.getElementById("quantity").value = 1;
-}
 
 function displayCart() {
 
