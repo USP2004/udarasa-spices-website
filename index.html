@@ -1087,6 +1087,8 @@ let selectedPrice = null;
 
 openProductButton.addEventListener('click', function () {
     productPopup.classList.add('active');
+    selectedQuantity = 1;
+quantityNumber.textContent = selectedQuantity;
 });
 
 closePopupButton.addEventListener('click', function () {
@@ -1117,7 +1119,7 @@ popupAddCartButton.addEventListener('click', function () {
         product: 'මිරිස් කුඩු',
         size: selectedSize,
         price: selectedPrice,
-        quantity: 1
+        quantity: selectedQuantity
     });
 
     localStorage.setItem('udarasaCart', JSON.stringify(cart));
@@ -1131,8 +1133,9 @@ popupAddCartButton.addEventListener('click', function () {
         'මිරිස් කුඩු - ' +
         selectedSize +
         ' - Rs. ' +
-        selectedPrice +
-        ' Cart එකට එකතු කළා'
+        (selectedPrice * selectedQuantity) +
+' | Qty: ' + selectedQuantity +
+' Cart එකට එකතු කළා'
     );
 });
 
@@ -1151,12 +1154,14 @@ quantityMinus.addEventListener('click', function () {
     if (selectedQuantity > 1) {
         selectedQuantity--;
         quantityNumber.textContent = selectedQuantity;
+        popupAddCartButton.innerHTML = '🛒 Add to Cart • Rs. ' + (selectedPrice * selectedQuantity).toLocaleString();
     }
 });
 
 quantityPlus.addEventListener('click', function () {
     selectedQuantity++;
     quantityNumber.textContent = selectedQuantity;
+    popupAddCartButton.innerHTML = '🛒 Add to Cart • Rs. ' + (selectedPrice * selectedQuantity).toLocaleString();
 });
 </script>
 </body>
