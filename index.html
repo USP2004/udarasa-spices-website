@@ -554,6 +554,118 @@ footer a {
     display: block;
 }
 }
+/* LIQUID GLASS PRODUCT POPUP */
+.product-options-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 20, 0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.product-options-overlay.active {
+    display: flex;
+}
+
+.product-options-glass {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 22px 22px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    text-align: center;
+}
+
+.product-options-glass h2 {
+    color: #8f171a;
+    font-size: 25px;
+    margin-bottom: 4px;
+}
+
+.popup-product-name {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.popup-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.65);
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.size-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.size-option {
+    border: 1px solid rgba(143,23,26,0.15);
+    background: rgba(255,255,255,0.55);
+    border-radius: 18px;
+    padding: 15px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.size-option span {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.size-option strong {
+    color: #8f171a;
+    font-size: 16px;
+}
+
+.size-option.selected {
+    background: #8f171a;
+    color: white;
+    border-color: #8f171a;
+    transform: scale(1.03);
+}
+
+.size-option.selected strong {
+    color: white;
+}
+
+.popup-add-cart {
+    width: 100%;
+    border: 0;
+    border-radius: 20px;
+    padding: 14px 20px;
+    background: #8f171a;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.popup-add-cart:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 </style>
 </head>
 
@@ -603,14 +715,7 @@ footer a {
   <h3>මිරිස් කුඩු</h3>
   <p>Chili Powder</p>
   
- <select class="product-size">
-    <option value="50g">50g</option>
-    <option value="100g">100g</option>
-    <option value="250g">250g</option>
-    <option value="500g">500g</option>
-</select>
-
-<button class="product-btn" type="button">🛒 Add to Cart</button>
+ <button class="product-btn open-product-options" type="button" data-product="මිරිස් කුඩු">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -807,6 +912,43 @@ footer a {
         </div>
     </div>
 </section>
+    <!-- PRODUCT OPTIONS POPUP -->
+<div class="product-options-overlay" id="productOptionsPopup">
+    <div class="product-options-glass">
+
+        <button class="popup-close" type="button">×</button>
+
+        <h2>Choose Your Size</h2>
+        <p class="popup-product-name">මිරිස් කුඩු • Chili Powder</p>
+
+        <div class="size-options">
+            <button type="button" class="size-option" data-size="50g" data-price="100">
+                <span>50g</span>
+                <strong>Rs. 100</strong>
+            </button>
+
+            <button type="button" class="size-option" data-size="100g" data-price="200">
+                <span>100g</span>
+                <strong>Rs. 200</strong>
+            </button>
+
+            <button type="button" class="size-option" data-size="250g" data-price="500">
+                <span>250g</span>
+                <strong>Rs. 500</strong>
+            </button>
+
+            <button type="button" class="size-option" data-size="500g" data-price="1000">
+                <span>500g</span>
+                <strong>Rs. 1,000</strong>
+            </button>
+        </div>
+
+        <button class="popup-add-cart" type="button" disabled>
+            🛒 Add to Cart
+        </button>
+
+    </div>
+</div>
 </main>
 
 <footer>
@@ -899,6 +1041,73 @@ function displayCart() {
 
 displayCart();
 updateCartCount();
+// LIQUID GLASS PRODUCT OPTIONS
+const productPopup = document.getElementById('productOptionsPopup');
+const openProductButton = document.querySelector('.open-product-options');
+const closePopupButton = document.querySelector('.popup-close');
+const sizeOptions = document.querySelectorAll('.size-option');
+const popupAddCartButton = document.querySelector('.popup-add-cart');
+
+let selectedSize = null;
+let selectedPrice = null;
+
+openProductButton.addEventListener('click', function () {
+    productPopup.classList.add('active');
+});
+
+closePopupButton.addEventListener('click', function () {
+    productPopup.classList.remove('active');
+});
+
+sizeOptions.forEach((option) => {
+    option.addEventListener('click', function () {
+
+        sizeOptions.forEach((item) => {
+            item.classList.remove('selected');
+        });
+
+        this.classList.add('selected');
+
+        selectedSize = this.dataset.size;
+        selectedPrice = Number(this.dataset.price);
+
+        popupAddCartButton.disabled = false;
+    });
+});
+
+popupAddCartButton.addEventListener('click', function () {
+
+    if (!selectedSize) return;
+
+    cart.push({
+        product: 'මිරිස් කුඩු',
+        size: selectedSize,
+        price: selectedPrice,
+        quantity: 1
+    });
+
+    localStorage.setItem('udarasaCart', JSON.stringify(cart));
+
+    updateCartCount();
+    displayCart();
+
+    productPopup.classList.remove('active');
+
+    alert(
+        'මිරිස් කුඩු - ' +
+        selectedSize +
+        ' - Rs. ' +
+        selectedPrice +
+        ' Cart එකට එකතු කළා'
+    );
+});
+
+productPopup.addEventListener('click', function (event) {
+    if (event.target === productPopup) {
+        productPopup.classList.remove('active');
+    }
+});
+
 </script>
 </body>
 </html>
