@@ -648,7 +648,37 @@ footer a {
 .size-option.selected strong {
     color: white;
 }
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 170px;
+    margin: 0 auto 20px;
+    padding: 6px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
 
+.quantity-btn {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.75);
+    font-size: 25px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.quantity-number {
+    min-width: 45px;
+    font-size: 21px;
+    font-weight: 700;
+    text-align: center;
+}
 .popup-add-cart {
     width: 100%;
     border: 0;
@@ -942,7 +972,11 @@ footer a {
                 <strong>Rs. 1,000</strong>
             </button>
         </div>
-
+<div class="quantity-control">
+    <button type="button" class="quantity-btn quantity-minus">−</button>
+    <span class="quantity-number">1</span>
+    <button type="button" class="quantity-btn quantity-plus">+</button>
+</div>
         <button class="popup-add-cart" type="button" disabled>
             🛒 Add to Cart
         </button>
@@ -1107,7 +1141,23 @@ productPopup.addEventListener('click', function (event) {
         productPopup.classList.remove('active');
     }
 });
+const quantityMinus = document.querySelector('.quantity-minus');
+const quantityPlus = document.querySelector('.quantity-plus');
+const quantityNumber = document.querySelector('.quantity-number');
 
+let selectedQuantity = 1;
+
+quantityMinus.addEventListener('click', function () {
+    if (selectedQuantity > 1) {
+        selectedQuantity--;
+        quantityNumber.textContent = selectedQuantity;
+    }
+});
+
+quantityPlus.addEventListener('click', function () {
+    selectedQuantity++;
+    quantityNumber.textContent = selectedQuantity;
+});
 </script>
 </body>
 </html>
