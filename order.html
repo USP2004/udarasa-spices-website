@@ -254,7 +254,8 @@ textarea {
 
 <script>
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("udarasaCart")) || [];
+displayCart();
 
 function addToCart() {
 
