@@ -766,6 +766,34 @@ select,
 html {
     scroll-behavior: smooth;
 }
+/* Floating Cart Button */
+.floating-cart {
+    position: fixed;
+    right: 20px;
+    bottom: 25px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(159, 29, 32, 0.88);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    z-index: 9999;
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.20);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.2s ease;
+}
+
+.floating-cart:active {
+    transform: scale(0.92);
+}
 </style>
 </head>
 
@@ -783,11 +811,13 @@ html {
             <a href="#products">Shop</a>
             <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
-           <a href="cart.html" class="cart">🛒 Cart (<span id="cart-count">0</span>)</a>
+           
         </div>
     </nav>
 </header>
-
+<a href="cart.html" class="floating-cart">
+    🛒 <span id="cart-count">0</span>
+</a>
 <main>
 <section class="hero" id="home">
   <div class="hero-banner">
