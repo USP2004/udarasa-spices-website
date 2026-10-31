@@ -1116,8 +1116,14 @@ let cart = JSON.parse(localStorage.getItem('udarasaCart')) || [];
 
 function updateCartCount() {
     const cartCount = document.getElementById('cart-count');
+    const floatingCart = document.querySelector('.floating-cart');
+
     if (cartCount) {
         cartCount.textContent = cart.length;
+    }
+
+    if (floatingCart) {
+        floatingCart.style.display = cart.length > 0 ? 'flex' : 'none';
     }
 }
 
