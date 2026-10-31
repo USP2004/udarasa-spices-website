@@ -242,7 +242,14 @@ function displayCart() {
 
   cartDiv.innerHTML = "";
 
+  let total = 0;
+
   cart.forEach((item, index) => {
+
+    const itemPrice =
+      Number(item.price || 0) * Number(item.quantity || 1);
+
+    total += itemPrice;
 
     const div = document.createElement("div");
 
@@ -251,7 +258,8 @@ function displayCart() {
     div.innerHTML = `
       <div>
         <strong>${item.product}</strong><br>
-        Size: ${item.size} × ${item.quantity}
+        Size: ${item.size} × ${item.quantity}<br>
+        Price: Rs. ${itemPrice.toLocaleString()}
       </div>
 
       <button class="remove-btn" onclick="removeItem(${index})">
@@ -261,6 +269,18 @@ function displayCart() {
 
     cartDiv.appendChild(div);
   });
+
+  const totalDiv = document.createElement("div");
+
+  totalDiv.innerHTML = `
+    <strong style="font-size:20px;">
+      Total: Rs. ${total.toLocaleString()}
+    </strong>
+  `;
+
+  totalDiv.style.marginTop = "20px";
+
+  cartDiv.appendChild(totalDiv);
 }
 
 function removeItem(index) {
