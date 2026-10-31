@@ -192,6 +192,7 @@ textarea {
 <div class="order-box">
 
 <h1>Place Your Order</h1>
+
 <div class="cart-box">
 
 <h2>Your Order</h2>
@@ -201,9 +202,6 @@ textarea {
 </div>
 
 </div>
-
-
-
 
 <label>Your Name / නම</label>
 <input type="text" id="name" placeholder="Enter your name">
@@ -227,9 +225,8 @@ textarea {
 <script>
 
 let cart = JSON.parse(localStorage.getItem("udarasaCart")) || [];
+
 displayCart();
-
-
 
 function displayCart() {
 
@@ -287,6 +284,8 @@ function removeItem(index) {
 
   cart.splice(index, 1);
 
+  localStorage.setItem("udarasaCart", JSON.stringify(cart));
+
   displayCart();
 }
 
@@ -306,29 +305,41 @@ function placeOrder() {
     return;
   }
 
+  let total = 0;
+
   let message =
-    "UDARASA SPICES PRODUCTS - NEW ORDER%0A%0A";
+    "UDARASA SPICES PRODUCTS - NEW ORDER\n\n";
 
   cart.forEach((item, index) => {
 
+    const itemPrice =
+      Number(item.price || 0) * Number(item.quantity || 1);
+
+    total += itemPrice;
+
     message +=
-      (index + 1) + ". " +
-      item.product +
-      "%0A" +
-      "Size: " + item.size +
-      "%0A" +
-      "Quantity: " + item.quantity +
-      "%0A%0A";
+      (index + 1) + ". " + item.product + "\n" +
+      "Size: " + item.size + "\n" +
+      "Quantity: " + item.quantity + "\n" +
+      "Price: Rs. " + itemPrice.toLocaleString() + "\n\n";
 
   });
 
   message +=
-    "Customer Name: " + encodeURIComponent(name) +
-    "%0APhone: " + encodeURIComponent(phone) +
-    "%0ADelivery Address: " + encodeURIComponent(address);
+    "TOTAL: Rs. " + total.toLocaleString() + "\n\n" +
+    "Customer Name: " + name + "\n" +
+    "Phone: " + phone + "\n" +
+    "Delivery Address: " + address;
 
-  window.location.href =
-    "https://wa.me/94704112222?text=" + message;
+  const whatsappNumber = "94704112222";
+
+  const whatsappURL =
+    "https://wa.me/" +
+    whatsappNumber +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.location.href = whatsappURL;
 }
 
 </script>
