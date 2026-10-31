@@ -105,6 +105,7 @@ cartTotal.innerHTML = `<strong>Total: Rs. ${total.toLocaleString()}</strong>`;
         <div class="cart-item">
             <strong>${item.product}</strong>
             <div>Size: ${item.size}</div>
+            <div>Price: Rs. ${(Number(item.price || 0) * Number(item.quantity || 1)).toLocaleString()}</div>
 
             <div>
                 Quantity:
