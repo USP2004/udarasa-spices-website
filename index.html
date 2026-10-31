@@ -855,7 +855,7 @@ html {
   <h3>කැලි මිරිස්</h3>
   <p>Dried Chili</p>
   
-  <a href="order.html" class="product-btn">Order Now</a>
+  <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -865,7 +865,7 @@ html {
   <h3>බැදපු මිරිස්</h3>
   <p>Roasted Chili</p>
   
-  <a href="order.html" class="product-btn">Order Now</a>
+  <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -875,7 +875,7 @@ html {
   <h3>කහ කුඩු</h3>
   <p>Turmeric Powder</p>
   
- <a href="order.html" class="product-btn">Order Now</a>
+ <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -885,7 +885,7 @@ html {
   <h3>ගම්මිරිස් කුඩු</h3>
   <p>Pepper Powder</p>
   
- <a href="order.html" class="product-btn">Order Now</a>
+ <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -895,7 +895,7 @@ html {
   <h3>තුනපහ කුඩු</h3>
   <p>Three Spice Blend</p>
   
-  <a href="order.html" class="product-btn">Order Now</a>
+  <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
 
 <div class="product-card">
@@ -905,7 +905,7 @@ html {
   <h3>බැදපු තුනපහ කුඩු</h3>
   <p>Roasted Three Spice Blend</p>
   
- <a href="order.html" class="product-btn">Order Now</a>
+ <button class="product-btn open-product-options" type="button">🛒 Add to Cart</button>
 </div>
            
 
@@ -1112,154 +1112,112 @@ html {
     </div>
 </footer>
 <script>
-let cart = JSON.parse(localStorage.getItem('udarasaCart')) || [];
+let cart;
+try {
+    const saved = JSON.parse(localStorage.getItem('udarasaCart'));
+    cart = Array.isArray(saved) ? saved : [];
+} catch (error) {
+    cart = [];
+}
 
 function updateCartCount() {
     const cartCount = document.getElementById('cart-count');
     const floatingCart = document.querySelector('.floating-cart');
-
     if (cartCount) {
-        cartCount.textContent = cart.length;
+        cartCount.textContent = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
     }
-
     if (floatingCart) {
         floatingCart.style.display = cart.length > 0 ? 'flex' : 'none';
     }
 }
 
-const addButton = document.querySelector('.product-card .product-btn');
-
-if (addButton) {
-    addButton.addEventListener('click', function () {
-        const productCard = this.closest('.product-card');
-        const productName = productCard.querySelector('h3').textContent;
-        const size = productCard.querySelector('.product-size').value;
-
-        cart.push({
-            product: productName,
-            size: size,
-            quantity: 1
-        });
-
-        localStorage.setItem('udarasaCart', JSON.stringify(cart));
-        updateCartCount();
-
-        alert(productName + ' - ' + size + ' Cart එකට එකතු කළා');
-    });
-}
-function displayCart() {
-    const cartItems = document.getElementById('cart-items');
-
-    if (!cartItems) return;
-
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p>Your cart is empty.</p>';
-        return;
-    }
-
-    cartItems.innerHTML = '';
-
-    cart.forEach((item) => {
-        cartItems.innerHTML += `
-            <div class="cart-item">
-                <strong>${item.product}</strong>
-                <span>Size: ${item.size}</span>
-                <span>Qty: ${item.quantity}</span>
-            </div>
-        `;
-    });
-}
-
-displayCart();
-updateCartCount();
-// LIQUID GLASS PRODUCT OPTIONS
 const productPopup = document.getElementById('productOptionsPopup');
-const openProductButton = document.querySelector('.open-product-options');
-const closePopupButton = document.querySelector('.popup-close');
-const sizeOptions = document.querySelectorAll('.size-option');
-const popupAddCartButton = document.querySelector('.popup-add-cart');
+const popupProductName = productPopup.querySelector('.popup-product-name');
+const closePopupButton = productPopup.querySelector('.popup-close');
+const sizeOptions = productPopup.querySelectorAll('.size-option');
+const popupAddCartButton = productPopup.querySelector('.popup-add-cart');
+const quantityMinus = productPopup.querySelector('.quantity-minus');
+const quantityPlus = productPopup.querySelector('.quantity-plus');
+const quantityNumber = productPopup.querySelector('.quantity-number');
 
+let selectedProduct = '';
 let selectedSize = null;
 let selectedPrice = null;
-
-openProductButton.addEventListener('click', function () {
-    productPopup.classList.add('active');
-    selectedQuantity = 1;
-quantityNumber.textContent = selectedQuantity;
-});
-
-closePopupButton.addEventListener('click', function () {
-    productPopup.classList.remove('active');
-});
-
-sizeOptions.forEach((option) => {
-    option.addEventListener('click', function () {
-
-        sizeOptions.forEach((item) => {
-            item.classList.remove('selected');
-        });
-
-        this.classList.add('selected');
-
-        selectedSize = this.dataset.size;
-        selectedPrice = Number(this.dataset.price);
-
-        popupAddCartButton.disabled = false;
-    });
-});
-
-popupAddCartButton.addEventListener('click', function () {
-
-    if (!selectedSize) return;
-
-    cart.push({
-        product: 'මිරිස් කුඩු',
-        size: selectedSize,
-        price: selectedPrice,
-        quantity: selectedQuantity
-    });
-
-    localStorage.setItem('udarasaCart', JSON.stringify(cart));
-
-    updateCartCount();
-    displayCart();
-
-    productPopup.classList.remove('active');
-
-    alert(
-        'මිරිස් කුඩු - ' +
-        selectedSize +
-        ' - Rs. ' +
-        (selectedPrice * selectedQuantity) +
-' | Qty: ' + selectedQuantity +
-' Cart එකට එකතු කළා'
-    );
-});
-
-productPopup.addEventListener('click', function (event) {
-    if (event.target === productPopup) {
-        productPopup.classList.remove('active');
-    }
-});
-const quantityMinus = document.querySelector('.quantity-minus');
-const quantityPlus = document.querySelector('.quantity-plus');
-const quantityNumber = document.querySelector('.quantity-number');
-
 let selectedQuantity = 1;
 
+function refreshAddButton() {
+    popupAddCartButton.disabled = !selectedSize;
+    popupAddCartButton.textContent = selectedSize
+        ? '🛒 Add to Cart • Rs. ' + (selectedPrice * selectedQuantity).toLocaleString('en-LK')
+        : '🛒 Add to Cart';
+}
+
+function closeProductPopup() {
+    productPopup.classList.remove('active');
+}
+
+document.querySelectorAll('.open-product-options').forEach(button => {
+    button.addEventListener('click', function () {
+        const card = this.closest('.product-card');
+        selectedProduct = card.querySelector('h3').textContent.trim();
+        const englishName = card.querySelector('p').textContent.trim();
+        popupProductName.textContent = selectedProduct + ' • ' + englishName;
+        selectedSize = null;
+        selectedPrice = null;
+        selectedQuantity = 1;
+        quantityNumber.textContent = '1';
+        sizeOptions.forEach(option => option.classList.remove('selected'));
+        refreshAddButton();
+        productPopup.classList.add('active');
+    });
+});
+
+sizeOptions.forEach(option => {
+    option.addEventListener('click', function () {
+        sizeOptions.forEach(item => item.classList.remove('selected'));
+        option.classList.add('selected');
+        selectedSize = option.dataset.size;
+        selectedPrice = Number(option.dataset.price);
+        refreshAddButton();
+    });
+});
+
 quantityMinus.addEventListener('click', function () {
-    if (selectedQuantity > 1) {
-        selectedQuantity--;
-        quantityNumber.textContent = selectedQuantity;
-        popupAddCartButton.innerHTML = '🛒 Add to Cart • Rs. ' + (selectedPrice * selectedQuantity).toLocaleString();
-    }
+    if (selectedQuantity > 1) selectedQuantity--;
+    quantityNumber.textContent = selectedQuantity;
+    refreshAddButton();
 });
 
 quantityPlus.addEventListener('click', function () {
     selectedQuantity++;
     quantityNumber.textContent = selectedQuantity;
-    popupAddCartButton.innerHTML = '🛒 Add to Cart • Rs. ' + (selectedPrice * selectedQuantity).toLocaleString();
+    refreshAddButton();
 });
+
+popupAddCartButton.addEventListener('click', function () {
+    if (!selectedProduct || !selectedSize || !Number.isFinite(selectedPrice)) return;
+    cart.push({
+        product: selectedProduct,
+        size: selectedSize,
+        price: selectedPrice,
+        quantity: selectedQuantity
+    });
+    localStorage.setItem('udarasaCart', JSON.stringify(cart));
+    updateCartCount();
+    closeProductPopup();
+    alert(selectedProduct + ' - ' + selectedSize + ' × ' + selectedQuantity +
+          ' | Rs. ' + (selectedPrice * selectedQuantity).toLocaleString('en-LK') +
+          ' Cart එකට එකතු කළා');
+});
+
+closePopupButton.addEventListener('click', closeProductPopup);
+productPopup.addEventListener('click', function (event) {
+    if (event.target === productPopup) closeProductPopup();
+});
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeProductPopup();
+});
+updateCartCount();
 </script>
 </body>
 </html>
