@@ -80,17 +80,26 @@
     <h1>🛒 Your Cart</h1>
 
     <div id="cart-items"></div>
+    <div id="cart-total"></div>
 <a href="order.html" class="checkout-btn">Place Order</a>
 </div>
 
 <script>
     const cart = JSON.parse(localStorage.getItem('udarasaCart')) || [];
     const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
 
     if (cart.length === 0) {
         cartItems.innerHTML =
             '<div class="empty-cart">Your cart is empty.</div>';
     } else {
+        let total = 0;
+
+cart.forEach(item => {
+    total += Number(item.price || 0) * Number(item.quantity || 1);
+});
+
+cartTotal.innerHTML = `<strong>Total: Rs. ${total.toLocaleString()}</strong>`;
         cart.forEach((item, index) => {
     cartItems.innerHTML += `
         <div class="cart-item">
