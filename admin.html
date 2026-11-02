@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDARASA | Admin Dashboard</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f3ef;
+  color: #302525;
+}
+header {
+  background: #941c25;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+header h2 { margin: 0; font-size: 20px; }
+header p { margin: 6px 0 0; font-size: 12px; }
+main { max-width: 1100px; margin: 30px auto; padding: 15px; }
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.07);
+}
+.login { max-width: 420px; margin: 65px auto; }
+input, select, button {
+  font: inherit;
+  border-radius: 10px;
+  padding: 12px;
+}
+input {
+  display: block;
+  width: 100%;
+  border: 1px solid #ddd;
+  margin: 12px 0;
+}
+button {
+  background: #941c25;
+  border: 0;
+  color: white;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; cursor: wait; }
+.login button { width: 100%; }
+#logout { background: white; color: #941c25; }
+.hidden { display: none !important; }
+.status { font-size: 13px; color: #666; }
+.error { color: #b00020; }
+.order {
+  border: 1px solid #eee;
+  padding: 18px;
+  margin-top: 15px;
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+}
+.order h3 { margin-top: 0; }
+.order select { margin: 10px 0; max-width: 100%; }
+.stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stats .card { flex: 1; min-width: 160px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h2>UDARASA SPICES PRODUCTS</h2>
+    <p>ADMIN DASHBOARD</p>
+  </div>
+  <button id="logout" class="hidden">Logout</button>
+</header>
+
+<main>
+  <section id="loginSection" class="card login">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <input id="email" type="email"
+        placeholder="Email address" required>
+      <input id="password" type="password"
+        placeholder="Password" required>
+      <button id="loginButton" type="submit">Login</button>
+    </form>
+    <p id="loginMessage" class="status"></p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <h2>Orders Dashboard</h2>
+    <div class="stats">
+      <div class="card">
+        <h3>Total Orders</h3>
+        <h2 id="totalOrders">0</h2>
+      </div>
+      <div class="card">
+        <h3>Pending Orders</h3>
+        <h2 id="pendingOrders">0</h2>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Customer Orders</h2>
+      <p id="orderMessage" class="status">Loading...</p>
+      <div id="orders"></div>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword,
+  onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import {
+  getFirestore, collection, onSnapshot,
+  doc, getDoc, updateDoc
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+// Paste the exact Firebase config from Project settings.
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "udarasa-spices-website.firebaseapp.com",
+  projectId: "udarasa-spices-website",
+  storageBucket: "udarasa-spices-website.firebasestorage.app",
+  messagingSenderId: "202922569978",
+  appId: "1:202922569978:web:00d7068df683aa19611943"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+let unsubscribeOrders = null;
+let isAdmin = false;
+
+function message(text, error = false) {
+  $("loginMessage").textContent = text;
+  $("loginMessage").className =
+    error ? "status error" : "status";
+}
+
+function clearDashboard() {
+  if (unsubscribeOrders) {
+    unsubscribeOrders();
+    unsubscribeOrders = null;
+  }
+  isAdmin = false;
+  $("dashboard").classList.add("hidden");
+  $("logout").classList.add("hidden");
+  $("loginSection").classList.remove("hidden");
+  $("orders").replaceChildren();
+}
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  $("loginButton").disabled = true;
+  message("Signing in...");
+  try {
+    await signInWithEmailAndPassword(
+      auth, $("email").value.trim(), $("password").value
+    );
+  } catch (error) {
+    message("Login failed. Check your email and password.", true);
+  } finally {
+    $("loginButton").disabled = false;
+  }
+});
+
+$("logout").addEventListener("click", async () => {
+  await signOut(auth);
+});
+
+onAuthStateChanged(auth, async user => {
+  clearDashboard();
+  if (!user) return;
+
+  message("Checking administrator access...");
+  try {
+    const admin = await getDoc(doc(db, "admins", user.uid));
+    if (!admin.exists() || admin.data().active !== true) {
+      message("This account does not have administrator access.", true);
+      await signOut(auth);
+      return;
+    }
+
+    isAdmin = true;
+    $("loginSection").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    $("logout").classList.remove("hidden");
+    listenForOrders();
+  } catch (error) {
+    message("Unable to verify administrator access.", true);
+    await signOut(auth);
+  }
+});
+
+function addText(parent, tag, text) {
+  const element = document.createElement(tag);
+  element.textContent = String(text ?? "");
+  parent.appendChild(element);
+  return element;
+}
+
+function listenForOrders() {
+  unsubscribeOrders = onSnapshot(
+    collection(db, "orders"),
+    snapshot => {
+      if (!isAdmin) return;
+      const orders = snapshot.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }));
+
+      orders.sort((a, b) => {
+        const time = x =>
+          x.createdAt?.toMillis?.() ||
+          Date.parse(x.createdAt || "") || 0;
+        return time(b) - time(a);
+      });
+
+      $("totalOrders").textContent = orders.length;
+      $("pendingOrders").textContent = orders.filter(
+        x => !x.status || x.status === "Pending"
+      ).length;
+      $("orderMessage").textContent =
+        orders.length ? "" : "No orders yet.";
+      $("orders").replaceChildren();
+
+      for (const order of orders) {
+        const card = document.createElement("div");
+        card.className = "order";
+        addText(card, "h3", "Order #" + order.id);
+        addText(card, "p", "Customer: " +
+          (order.customerName || order.name || "Not provided"));
+        addText(card, "p", "Phone: " +
+          (order.phone || "Not provided"));
+        addText(card, "p", "Address: " +
+          (order.address || "Not provided"));
+
+        if (Array.isArray(order.items)) {
+          const list = document.createElement("ul");
+          for (const item of order.items) {
+            addText(list, "li",
+              (item.name || item.product || "Product") +
+              " | " + (item.size || "") +
+              " | Qty: " + (item.quantity ?? item.qty ?? 1));
+          }
+          card.appendChild(list);
+        }
+
+        if (order.total != null) {
+          addText(card, "p", "Total: Rs. " + order.total);
+        }
+
+        const select = document.createElement("select");
+        for (const status of [
+          "Pending", "Processing", "Completed", "Cancelled"
+        ]) {
+          const option = document.createElement("option");
+          option.value = status;
+          option.textContent = status;
+          select.appendChild(option);
+        }
+        select.value = order.status || "Pending";
+        select.addEventListener("change", async () => {
+          select.disabled = true;
+          try {
+            await updateDoc(doc(db, "orders", order.id), {
+              status: select.value
+            });
+          } catch
